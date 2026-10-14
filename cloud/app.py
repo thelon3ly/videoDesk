@@ -109,8 +109,8 @@ class Handler(local.Handler):
         super().do_POST()
 
     def do_GET(self) -> None:
-        if self.path == "/healthz":
-            self.send_json(200, {"ok": True})
+        if self.path in ("/healthz", "/api/health"):
+            self.send_json(200, {"ok": True, "yt_dlp": True, "ffmpeg": local.ffmpeg_path() is not None})
             return
         # A completed file is served only through its unguessable job ID.
         if re.fullmatch(r"/api/jobs/[a-f0-9]{32}/file", self.path):
