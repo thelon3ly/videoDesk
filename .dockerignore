@@ -1,0 +1,14 @@
+.git
+.github
+android
+windows7
+build
+dist
+outputs
+**/__pycache__
+**/*.pyc
+**/.venv
+*.apk
+*.exe
+*.zip
+*.7z

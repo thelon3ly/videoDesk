@@ -220,6 +220,9 @@ def run_download(job_id: str, url: str, format_id: str, kind: str) -> None:
         if not files:
             raise RuntimeError("Download finished, but no media file was created.")
         chosen = max(files, key=lambda p: p.stat().st_size)
+        if max_mb > 0 and chosen.stat().st_size > max_mb * 1024 * 1024:
+            chosen.unlink()
+            raise RuntimeError(f"The finished file exceeds the {max_mb} MB online limit.")
         with LOCK:
             job.update(status="ready", progress=100, filename=chosen.name, path=str(chosen), size=chosen.stat().st_size)
     except Exception as exc:
