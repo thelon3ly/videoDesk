@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="Preview and save direct public video or audio links in your browser. Get the full VideoDesk app for video pages and audio extraction.">
+  <link rel="icon" href="./windows/public/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./windows/public/icon-192.png">
+  <link rel="stylesheet" href="./windows/public/style.css">
+  <link rel="stylesheet" href="./site.css">
+  <title>VideoDesk — save a video to this device</title>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="./"><span class="brand-icon">↓</span><span>VideoDesk</span></a>
+      <span class="local-badge"><span></span><span class="badge-text">Browser edition</span></span>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">YOUR VIDEO, YOUR DEVICE</p>
+      <h1>Save the video<br><em>you have a link to.</em></h1>
+      <p class="intro">Paste a direct video or audio file link to preview it, then save it to this phone or computer.</p>
+      <form id="inspect-form" class="url-form">
+        <label for="video-url">Video or audio URL</label>
+        <div class="input-row">
+          <input id="video-url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="https://example.com/video.mp4" required>
+          <button id="inspect-btn" type="submit">Find file <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+      <p class="helper">Direct .mp4, .webm, .mov, .mp3, .m4a and other media files</p>
+      <div class="site-note">
+        <strong>Want a video from a public website or audio only from a video?</strong>
+        <span>Use the <a href="https://github.com/thelon3ly/videoDesk">Android or Windows app</a> for video pages, quality choices, and audio extraction. This website runs in your browser and cannot process those links on its own.</span>
+      </div>
+    </section>
+
+    <div id="message" class="message" role="status" aria-live="polite" hidden></div>
+    <section id="result" class="result" hidden>
+      <div class="result-head"><span class="step">01 / FILE FOUND</span><span id="source" class="source"></span></div>
+      <h2 id="title"></h2>
+      <p id="details" class="details"></p>
+      <div class="preview-heading"><h3>Preview</h3><span>Play before saving</span></div>
+      <div id="preview-frame" class="preview-frame"></div>
+      <p id="preview-note" class="preview-note"></p>
+      <div class="quality-heading"><h3>Available format</h3><span>Original file</span></div>
+      <div class="jelly-radio" role="group" aria-label="Available format">
+        <span class="jelly-chip" data-selected><span class="jelly-skin"><strong>Original</strong><small>As provided by the source</small></span></span>
+      </div>
+      <button id="download-btn" class="download-btn" type="button">Download file <span aria-hidden="true">↘</span></button>
+      <p class="fineprint">For media you are permitted to save. Browser downloads depend on the source allowing cross-origin access.</p>
+    </section>
+    <section id="progress-panel" class="progress-panel" hidden>
+      <div class="progress-top"><span id="progress-label">Downloading file…</span><strong id="percent">0%</strong></div>
+      <div class="progress-track"><div id="progress-fill"></div></div>
+      <p id="progress-note">Keep this page open until the save dialog appears.</p>
+      <a id="save-link" class="save-link" href="#" hidden>Save file to this device <span aria-hidden="true">↓</span></a>
+    </section>
+    <footer><span>VideoDesk</span><span>Browser edition · <a href="https://github.com/thelon3ly/videoDesk">Get the full app</a></span></footer>
+  </main>
+  <script src="./site.js" defer></script>
+</body>
+</html>
