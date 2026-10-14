@@ -8,6 +8,7 @@ let timer = null;
 let inspection = null;
 let downloadKind = 'video';
 const android = Boolean(window.VideoDeskAndroid);
+const online = location.hostname.endsWith('.onrender.com');
 const androidRequests = new Map();
 const typedHeading = $('#typed-heading');
 if (typedHeading) {
@@ -47,7 +48,7 @@ window.videoDeskAndroidResponse = (id, status, body) => {
 
 function serverState(connected) {
   $('#server-badge').classList.toggle('offline', !connected);
-  $('#server-label').textContent = connected ? 'Running on this device' : 'Local server stopped';
+  $('#server-label').textContent = online ? (connected ? 'Online downloader' : 'Online service unavailable') : (connected ? 'Running on this device' : 'Local server stopped');
 }
 
 function showMessage(text, kind = 'error') {
@@ -238,7 +239,7 @@ async function json(path, options) {
     serverState(true);
   } catch {
     serverState(false);
-    throw new Error('Cannot reach the local downloader. Start start-windows.bat on a computer or start-android.sh in Termux, keep it running, then try again.');
+    throw new Error(online ? 'Cannot reach the online downloader. Wait a moment and try again.' : 'Cannot reach the local downloader. Start start-windows.bat on a computer or start-android.sh in Termux, keep it running, then try again.');
   }
   const data = await response.json();
   if (!response.ok) throw new Error(data.error || 'Something went wrong.');
@@ -318,5 +319,14 @@ async function poll(jobId, kind) {
 }
 if (!android && 'serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 json('/api/health').catch(() => {
-  showMessage(android ? 'The downloader could not start. Reopen the app and try again.' : 'The local downloader is stopped. Start the launcher for this device, then try again.', 'info');
+  showMessage(android ? 'The downloader could not start. Reopen the app and try again.' : online ? 'The online downloader is unavailable. Please try again shortly.' : 'The local downloader is stopped. Start the launcher for this device, then try again.', 'info');
 });
+if (online) {
+  document.querySelector('footer span:last-child').textContent = 'Online edition · Saves to this device';
+  $('.helper').textContent = 'Public YouTube, Vimeo, TikTok and Dailymotion videos · One video at a time';
+  const sharedUrl = new URLSearchParams(location.search).get('url');
+  if (sharedUrl) {
+    $('#video-url').value = sharedUrl;
+    form.requestSubmit();
+  }
+}

@@ -5,10 +5,12 @@ const result = $('#result');
 const message = $('#message');
 const progress = $('#progress-panel');
 const downloadButton = $('#download-btn');
+const onlineUrl = 'https://videodesk-online.onrender.com/';
 let selectedFile = null;
 
 const videoExtensions = new Set(['mp4', 'webm', 'mov', 'm4v', 'mkv', 'avi']);
 const audioExtensions = new Set(['mp3', 'm4a', 'aac', 'ogg', 'opus', 'wav', 'flac']);
+const onlineHosts = ['youtube.com', 'youtu.be', 'youtube-nocookie.com', 'vimeo.com', 'tiktok.com', 'dailymotion.com', 'dai.ly'];
 
 function showMessage(text) {
   message.textContent = text;
@@ -42,11 +44,14 @@ function inspect(raw) {
   if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) {
     throw new Error('Use a public http or https media link without login details.');
   }
+  if (onlineHosts.some((host) => url.hostname === host || url.hostname.endsWith(`.${host}`))) {
+    return { url, online: true };
+  }
   const name = fileName(url.pathname);
   const extension = name.includes('.') ? name.split('.').pop().toLowerCase() : '';
   const kind = videoExtensions.has(extension) ? 'video' : audioExtensions.has(extension) ? 'audio' : null;
   if (!kind) {
-    throw new Error('This browser edition needs a direct media file link, such as .mp4, .webm, .mp3, or .m4a. For video page links, use the Android or Windows app.');
+    throw new Error('Online video pages currently support YouTube, Vimeo, TikTok, and Dailymotion. For other sites, paste a direct .mp4, .webm, .mp3, or .m4a file link or use the installed app.');
   }
   return { url, name: safeFileName(name), kind };
 }
@@ -59,6 +64,10 @@ form.addEventListener('submit', (event) => {
   selectedFile = null;
   try {
     selectedFile = inspect(input.value);
+    if (selectedFile.online) {
+      window.location.assign(`${onlineUrl}?url=${encodeURIComponent(selectedFile.url.href)}`);
+      return;
+    }
     $('#source').textContent = selectedFile.url.hostname;
     $('#title').textContent = selectedFile.name;
     $('#details').textContent = `${selectedFile.kind === 'video' ? 'Video' : 'Audio'} · Direct file link`;

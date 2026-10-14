@@ -125,8 +125,6 @@ if __name__ == "__main__":
     os.environ.setdefault("VIDEO_APP_MAX_MB", "250")
     os.environ.setdefault("VIDEO_APP_MAX_SECONDS", "900")
     os.environ.setdefault("VIDEO_APP_JS_RUNTIME", "node")
-    os.environ.setdefault("VIDEO_APP_YOUTUBE_CLIENTS", "android_vr,tv_simply,web_embedded")
-    os.environ.setdefault("VIDEO_APP_DIAGNOSTICS", "1")
     port = int(os.environ.get("PORT", "10000"))
     threading.Thread(target=cleanup_jobs, daemon=True).start()
     print(f"VideoDesk online server listening on port {port}", flush=True)

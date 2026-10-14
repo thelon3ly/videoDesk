@@ -15,7 +15,7 @@ Use VideoDesk only for videos you are allowed to save. Private, paywalled, and D
 
 The GitHub Pages edition handles direct media files. Video page links such as YouTube need a running server to inspect formats and prepare the download. The included container serves the full VideoDesk interface and supports public YouTube, Vimeo, TikTok, and Dailymotion links. It saves completed downloads for one hour; the visitor's browser then saves the file to their phone or computer. Availability still depends on each source and yt-dlp.
 
-[Deploy VideoDesk on Render](https://render.com/deploy?repo=https://github.com/thelon3ly/videoDesk) using `render.yaml`. The Free plan spins down after inactivity and has usage limits. The service uses temporary storage and limits downloads to 250 MB, two simultaneous jobs, and eight downloads per visitor per hour. After Render gives the service a URL, use that URL for the full web app and update the GitHub Pages front page to point to it.
+Use the [GitHub Pages app](https://thelon3ly.github.io/videoDesk/) to paste a link. Supported video pages open in the [online downloader](https://videodesk-online.onrender.com/) for quality and audio choices when the source permits cloud access. YouTube returned HTTP 429 from Render during testing, so YouTube downloads through this host are not reliable; use the installed Android or Windows app for that source. The Render Free plan spins down after inactivity and has usage limits. The service uses temporary storage and limits downloads to 250 MB, two simultaneous jobs, and eight downloads per visitor per hour. See `render.yaml` to deploy your own instance.
 
 ## Android
 

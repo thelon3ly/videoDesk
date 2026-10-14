@@ -66,10 +66,8 @@ def yt_dlp(*args: str, timeout: int | None = None) -> subprocess.CompletedProces
     ffmpeg = ffmpeg_path()
     runtime = os.environ.get("VIDEO_APP_JS_RUNTIME")
     js_runtime = ["--js-runtimes", runtime] if runtime else []
-    youtube_clients = os.environ.get("VIDEO_APP_YOUTUBE_CLIENTS")
-    client_args = ["--extractor-args", f"youtube:player_client={youtube_clients}"] if youtube_clients else []
     return subprocess.run(
-        [*ytdlp_command(), "--ignore-config", "--no-playlist", *js_runtime, *client_args, *(["--ffmpeg-location", ffmpeg] if ffmpeg else []), *args],
+        [*ytdlp_command(), "--ignore-config", "--no-playlist", *js_runtime, *(["--ffmpeg-location", ffmpeg] if ffmpeg else []), *args],
         capture_output=True,
         text=True,
         encoding="utf-8",
@@ -80,6 +78,8 @@ def yt_dlp(*args: str, timeout: int | None = None) -> subprocess.CompletedProces
 
 
 def readable_error(stderr: str) -> str:
+    if "[youtube]" in stderr and "HTTP Error 429" in stderr:
+        return "YouTube is limiting requests from this server. Try the Android or Windows app on your device."
     lines = [x.strip() for x in stderr.splitlines() if x.strip()]
     errors = [x for x in lines if "ERROR:" in x]
     message = (errors[-1] if errors else (lines[-1] if lines else "The source did not provide a downloadable video."))
@@ -108,8 +108,6 @@ def browser_preview(info: dict, formats: list[dict]) -> dict:
 def inspect(url: str) -> dict:
     result = yt_dlp("--dump-single-json", "--skip-download", url, timeout=70)
     if result.returncode:
-        if os.environ.get("VIDEO_APP_DIAGNOSTICS") == "1" and "8YF6rns8Dv0" in url:
-            print(result.stderr[-5000:], flush=True)
         raise ValueError(readable_error(result.stderr))
     try:
         info = json.loads(result.stdout)
@@ -194,11 +192,9 @@ def run_download(job_id: str, url: str, format_id: str, kind: str) -> None:
         format_args = ["--format", format_id, "--merge-output-format", "mp4/mkv"]
     runtime = os.environ.get("VIDEO_APP_JS_RUNTIME")
     js_runtime = ["--js-runtimes", runtime] if runtime else []
-    youtube_clients = os.environ.get("VIDEO_APP_YOUTUBE_CLIENTS")
-    client_args = ["--extractor-args", f"youtube:player_client={youtube_clients}"] if youtube_clients else []
     max_mb = int(os.environ.get("VIDEO_APP_MAX_MB", "0"))
     size_limit = ["--max-filesize", f"{max_mb}M"] if max_mb > 0 else []
-    args = [*ytdlp_command(), "--ignore-config", "--no-playlist", *js_runtime, *client_args, *(["--ffmpeg-location", ffmpeg] if ffmpeg else []), "--newline", "--no-warnings", *size_limit, *format_args, "--output", str(folder / "%(title).180B [%(id)s].%(ext)s"), url]
+    args = [*ytdlp_command(), "--ignore-config", "--no-playlist", *js_runtime, *(["--ffmpeg-location", ffmpeg] if ffmpeg else []), "--newline", "--no-warnings", *size_limit, *format_args, "--output", str(folder / "%(title).180B [%(id)s].%(ext)s"), url]
     errors: list[str] = []
     try:
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", bufsize=1)
