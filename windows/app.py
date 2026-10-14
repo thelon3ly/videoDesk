@@ -64,8 +64,10 @@ def valid_url(value: object) -> str:
 
 def yt_dlp(*args: str, timeout: int | None = None) -> subprocess.CompletedProcess:
     ffmpeg = ffmpeg_path()
+    runtime = os.environ.get("VIDEO_APP_JS_RUNTIME")
+    js_runtime = ["--js-runtimes", runtime] if runtime else []
     return subprocess.run(
-        [*ytdlp_command(), "--ignore-config", "--no-playlist", *(["--ffmpeg-location", ffmpeg] if ffmpeg else []), *args],
+        [*ytdlp_command(), "--ignore-config", "--no-playlist", *js_runtime, *(["--ffmpeg-location", ffmpeg] if ffmpeg else []), *args],
         capture_output=True,
         text=True,
         encoding="utf-8",
@@ -186,20 +188,32 @@ def run_download(job_id: str, url: str, format_id: str, kind: str) -> None:
             format_args += ["--audio-quality", quality]
     else:
         format_args = ["--format", format_id, "--merge-output-format", "mp4/mkv"]
-    args = [*ytdlp_command(), "--ignore-config", "--no-playlist", *(["--ffmpeg-location", ffmpeg] if ffmpeg else []), "--newline", "--no-warnings", *format_args, "--output", str(folder / "%(title).180B [%(id)s].%(ext)s"), url]
+    runtime = os.environ.get("VIDEO_APP_JS_RUNTIME")
+    js_runtime = ["--js-runtimes", runtime] if runtime else []
+    max_mb = int(os.environ.get("VIDEO_APP_MAX_MB", "0"))
+    size_limit = ["--max-filesize", f"{max_mb}M"] if max_mb > 0 else []
+    args = [*ytdlp_command(), "--ignore-config", "--no-playlist", *js_runtime, *(["--ffmpeg-location", ffmpeg] if ffmpeg else []), "--newline", "--no-warnings", *size_limit, *format_args, "--output", str(folder / "%(title).180B [%(id)s].%(ext)s"), url]
     errors: list[str] = []
     try:
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", bufsize=1)
+        max_seconds = int(os.environ.get("VIDEO_APP_MAX_SECONDS", "0"))
+        timer = threading.Timer(max_seconds, process.kill) if max_seconds > 0 else None
+        if timer:
+            timer.start()
         assert process.stdout is not None
-        for line in process.stdout:
-            line = line.strip()
-            if "ERROR:" in line:
-                errors.append(line)
-            match = re.search(r"\[download\]\s+([\d.]+)%", line)
-            if match:
-                with LOCK:
-                    job["progress"] = min(99, float(match.group(1)))
-        code = process.wait(timeout=1800)
+        try:
+            for line in process.stdout:
+                line = line.strip()
+                if "ERROR:" in line:
+                    errors.append(line)
+                match = re.search(r"\[download\]\s+([\d.]+)%", line)
+                if match:
+                    with LOCK:
+                        job["progress"] = min(99, float(match.group(1)))
+            code = process.wait(timeout=1800)
+        finally:
+            if timer:
+                timer.cancel()
         if code:
             raise RuntimeError(errors[-1] if errors else "Download failed. The source may have changed or restricted access.")
         files = [p for p in folder.iterdir() if p.is_file() and not p.name.endswith((".part", ".ytdl"))]

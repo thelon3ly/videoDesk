@@ -9,6 +9,13 @@ Use VideoDesk only for videos you are allowed to save. Private, paywalled, and D
 - `android/` — native Android app with an on-device yt-dlp and FFmpeg backend.
 - `windows/` — local Windows server, browser interface, and standard installer build script.
 - `windows7/` — separate build instructions and installer script for Windows 7 SP1 (64-bit).
+- `cloud/` — container server for public video pages on an online host.
+
+## Online video pages
+
+The GitHub Pages edition handles direct media files. Video page links such as YouTube need a running server to inspect formats and prepare the download. The included container serves the full VideoDesk interface and supports public YouTube, Vimeo, TikTok, and Dailymotion links. It saves completed downloads for one hour; the visitor's browser then saves the file to their phone or computer. Availability still depends on each source and yt-dlp.
+
+[Deploy VideoDesk on Render](https://render.com/deploy?repo=https://github.com/thelon3ly/videoDesk) using `render.yaml`. The Free plan spins down after inactivity and has usage limits. The service uses temporary storage and limits downloads to 250 MB, two simultaneous jobs, and eight downloads per visitor per hour. After Render gives the service a URL, use that URL for the full web app and update the GitHub Pages front page to point to it.
 
 ## Android
 

@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: videodesk-online
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./cloud/Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    envVars:
+      - key: VIDEO_APP_MAX_MB
+        value: "250"
+      - key: VIDEO_APP_MAX_SECONDS
+        value: "900"
