@@ -66,8 +66,10 @@ def yt_dlp(*args: str, timeout: int | None = None) -> subprocess.CompletedProces
     ffmpeg = ffmpeg_path()
     runtime = os.environ.get("VIDEO_APP_JS_RUNTIME")
     js_runtime = ["--js-runtimes", runtime] if runtime else []
+    youtube_clients = os.environ.get("VIDEO_APP_YOUTUBE_CLIENTS")
+    client_args = ["--extractor-args", f"youtube:player_client={youtube_clients}"] if youtube_clients else []
     return subprocess.run(
-        [*ytdlp_command(), "--ignore-config", "--no-playlist", *js_runtime, *(["--ffmpeg-location", ffmpeg] if ffmpeg else []), *args],
+        [*ytdlp_command(), "--ignore-config", "--no-playlist", *js_runtime, *client_args, *(["--ffmpeg-location", ffmpeg] if ffmpeg else []), *args],
         capture_output=True,
         text=True,
         encoding="utf-8",
@@ -190,9 +192,11 @@ def run_download(job_id: str, url: str, format_id: str, kind: str) -> None:
         format_args = ["--format", format_id, "--merge-output-format", "mp4/mkv"]
     runtime = os.environ.get("VIDEO_APP_JS_RUNTIME")
     js_runtime = ["--js-runtimes", runtime] if runtime else []
+    youtube_clients = os.environ.get("VIDEO_APP_YOUTUBE_CLIENTS")
+    client_args = ["--extractor-args", f"youtube:player_client={youtube_clients}"] if youtube_clients else []
     max_mb = int(os.environ.get("VIDEO_APP_MAX_MB", "0"))
     size_limit = ["--max-filesize", f"{max_mb}M"] if max_mb > 0 else []
-    args = [*ytdlp_command(), "--ignore-config", "--no-playlist", *js_runtime, *(["--ffmpeg-location", ffmpeg] if ffmpeg else []), "--newline", "--no-warnings", *size_limit, *format_args, "--output", str(folder / "%(title).180B [%(id)s].%(ext)s"), url]
+    args = [*ytdlp_command(), "--ignore-config", "--no-playlist", *js_runtime, *client_args, *(["--ffmpeg-location", ffmpeg] if ffmpeg else []), "--newline", "--no-warnings", *size_limit, *format_args, "--output", str(folder / "%(title).180B [%(id)s].%(ext)s"), url]
     errors: list[str] = []
     try:
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", bufsize=1)
