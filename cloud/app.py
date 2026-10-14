@@ -20,7 +20,7 @@ from windows import app as local
 
 SUPPORTED_HOSTS = (
     "youtube.com", "youtu.be", "youtube-nocookie.com",
-    "vimeo.com", "tiktok.com", "dailymotion.com", "dai.ly",
+    "vimeo.com", "tiktok.com", "dailymotion.com", "dai.ly", "archive.org",
 )
 REQUESTS: dict[str, deque[float]] = defaultdict(deque)
 REQUEST_LOCK = threading.Lock()
@@ -33,7 +33,7 @@ def supported_url(value: object) -> str:
     url = local.valid_url(value)
     host = (urlparse(url).hostname or "").lower().rstrip(".")
     if not any(host == name or host.endswith("." + name) for name in SUPPORTED_HOSTS):
-        raise ValueError("The online app supports public YouTube, Vimeo, TikTok, and Dailymotion video links. Use the installed app for other sites.")
+        raise ValueError("The online app supports public YouTube, Vimeo, TikTok, Dailymotion, and Internet Archive video links. Use the installed app for other sites.")
     return url
 
 

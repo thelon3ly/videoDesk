@@ -323,7 +323,7 @@ json('/api/health').catch(() => {
 });
 if (online) {
   document.querySelector('footer span:last-child').textContent = 'Online edition · Saves to this device';
-  $('.helper').textContent = 'Public YouTube, Vimeo, TikTok and Dailymotion videos · One video at a time';
+  $('.helper').textContent = 'Public Internet Archive, YouTube, Vimeo, TikTok and Dailymotion videos · One video at a time';
   const sharedUrl = new URLSearchParams(location.search).get('url');
   if (sharedUrl) {
     $('#video-url').value = sharedUrl;

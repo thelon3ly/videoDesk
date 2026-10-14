@@ -10,7 +10,7 @@ let selectedFile = null;
 
 const videoExtensions = new Set(['mp4', 'webm', 'mov', 'm4v', 'mkv', 'avi']);
 const audioExtensions = new Set(['mp3', 'm4a', 'aac', 'ogg', 'opus', 'wav', 'flac']);
-const onlineHosts = ['youtube.com', 'youtu.be', 'youtube-nocookie.com', 'vimeo.com', 'tiktok.com', 'dailymotion.com', 'dai.ly'];
+const onlineHosts = ['youtube.com', 'youtu.be', 'youtube-nocookie.com', 'vimeo.com', 'tiktok.com', 'dailymotion.com', 'dai.ly', 'archive.org'];
 
 function showMessage(text) {
   message.textContent = text;
@@ -51,7 +51,7 @@ function inspect(raw) {
   const extension = name.includes('.') ? name.split('.').pop().toLowerCase() : '';
   const kind = videoExtensions.has(extension) ? 'video' : audioExtensions.has(extension) ? 'audio' : null;
   if (!kind) {
-    throw new Error('Online video pages currently support YouTube, Vimeo, TikTok, and Dailymotion. For other sites, paste a direct .mp4, .webm, .mp3, or .m4a file link or use the installed app.');
+    throw new Error('Online video pages currently support YouTube, Vimeo, TikTok, Dailymotion, and Internet Archive. For other sites, paste a direct .mp4, .webm, .mp3, or .m4a file link or use the installed app.');
   }
   return { url, name: safeFileName(name), kind };
 }
