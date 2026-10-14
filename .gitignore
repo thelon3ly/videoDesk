@@ -1,0 +1,17 @@
+.gradle/
+.idea/
+.vscode/
+.venv/
+__pycache__/
+*.py[cod]
+*.log
+*.apk
+*.aab
+*.exe
+*.zip
+*.7z
+*.jks
+*.keystore
+local.properties
+build/
+dist/

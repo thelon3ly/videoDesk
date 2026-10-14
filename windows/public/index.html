@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="Inspect a public video link, then save the video or its audio to this device.">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  <link rel="stylesheet" href="/style.css">
+  <title>VideoDesk — save a video to this device</title>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="/"><span class="brand-icon">↓</span><span>VideoDesk</span></a>
+      <span id="server-badge" class="local-badge"><span></span><span id="server-label">Checking local server…</span></span>
+    </header>
+    <section class="hero">
+      <p class="eyebrow">YOUR VIDEO, YOUR DEVICE</p>
+      <h1 aria-label="Save the video you have a link to.">Save the video<br><em class="typed-line" aria-hidden="true"><span class="typed-measure">you have a link to.</span><span class="typed-overlay"><span id="typed-heading"></span><span class="typed-cursor">|</span></span></em></h1>
+      <p class="intro">Paste a public video URL. Choose video or audio only, then save the file to this phone or computer.</p>
+      <form id="inspect-form" class="url-form">
+        <label for="video-url">Video URL</label>
+        <div class="input-row">
+          <input id="video-url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="https://example.com/video" required>
+          <button id="inspect-btn" type="submit">Find video <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+      <p class="helper">Public video pages and direct video links · One video at a time</p>
+    </section>
+    <div id="message" class="message" role="status" aria-live="polite" hidden></div>
+    <section id="result" class="result" hidden>
+      <div class="result-head">
+        <span class="step">01 / VIDEO FOUND</span>
+        <span id="source" class="source"></span>
+      </div>
+      <h2 id="title"></h2>
+      <p id="details" class="details"></p>
+      <div class="preview-heading"><h3>Preview</h3><span>Watch before saving</span></div>
+      <div id="preview-frame" class="preview-frame"></div>
+      <p id="preview-note" class="preview-note"></p>
+      <div class="media-toggle" role="group" aria-label="Download type">
+        <span id="video-mode-label" class="mode-label active">Video</span>
+        <button id="media-switch" class="squish-switch" type="button" role="switch" aria-label="Audio only" aria-checked="false">
+          <span class="squish-track" aria-hidden="true"><span class="squish-thumb"><span class="squish-thumb-face"></span></span></span>
+        </button>
+        <span id="audio-mode-label" class="mode-label">Audio only</span>
+      </div>
+      <div class="quality-heading"><h3 id="quality-heading">Choose video quality</h3><span id="quality-count"></span></div>
+      <div id="qualities" class="jelly-radio" role="radiogroup" aria-label="Video quality"></div>
+      <button id="download-btn" class="download-btn" type="button">Prepare download <span aria-hidden="true">↘</span></button>
+      <p class="fineprint">For videos you are permitted to save. Some sites, private videos, and DRM protected streams cannot be downloaded.</p>
+    </section>
+    <section id="progress-panel" class="progress-panel" hidden>
+      <div class="progress-top"><span id="progress-label">Preparing file…</span><strong id="percent">0%</strong></div>
+      <div class="progress-track"><div id="progress-fill"></div></div>
+      <p id="progress-note">Keep this page open while the file is prepared.</p>
+      <a id="save-link" class="save-link" href="#" hidden>Save file to this device <span aria-hidden="true">↓</span></a>
+    </section>
+    <footer><span>VideoDesk</span><span>Local by design · Android + desktop</span></footer>
+  </main>
+  <script src="/app.js" defer></script>
+</body>
+</html>
