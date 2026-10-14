@@ -108,6 +108,8 @@ def browser_preview(info: dict, formats: list[dict]) -> dict:
 def inspect(url: str) -> dict:
     result = yt_dlp("--dump-single-json", "--skip-download", url, timeout=70)
     if result.returncode:
+        if os.environ.get("VIDEO_APP_DIAGNOSTICS") == "1" and "8YF6rns8Dv0" in url:
+            print(result.stderr[-5000:], flush=True)
         raise ValueError(readable_error(result.stderr))
     try:
         info = json.loads(result.stdout)
