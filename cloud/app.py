@@ -15,6 +15,7 @@ from collections import defaultdict, deque
 from http.server import ThreadingHTTPServer
 from urllib.parse import urlparse
 
+os.environ["VIDEO_APP_CLOUD"] = "1"
 from windows import app as local
 
 

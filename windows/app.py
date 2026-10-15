@@ -78,8 +78,15 @@ def yt_dlp(*args: str, timeout: int | None = None) -> subprocess.CompletedProces
 
 
 def readable_error(stderr: str) -> str:
-    if "[youtube]" in stderr and "HTTP Error 429" in stderr:
-        return "YouTube is limiting requests from this server. Try the Android or Windows app on your device."
+    lowered = stderr.lower()
+    if "[youtube]" in lowered and (
+        "sign in to confirm you're not a bot" in lowered
+        or "sign in to confirm you’re not a bot" in lowered
+        or "http error 429" in lowered
+    ):
+        if os.environ.get("VIDEO_APP_CLOUD") == "1":
+            return "YouTube blocked this cloud server for this video. Try the installed Android or Windows app on your device; it may work there."
+        return "YouTube requires sign-in or is limiting access to this video. Try another public video or open the video on YouTube."
     lines = [x.strip() for x in stderr.splitlines() if x.strip()]
     errors = [x for x in lines if "ERROR:" in x]
     message = (errors[-1] if errors else (lines[-1] if lines else "The source did not provide a downloadable video."))
