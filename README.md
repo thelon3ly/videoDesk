@@ -7,6 +7,7 @@ Use VideoDesk only for videos you are allowed to save. Private, paywalled, and D
 ## Download the apps
 
 - [Windows 10/11 installer (64-bit)](https://github.com/thelon3ly/videoDesk/releases/download/v1.0.0/VideoDesk-Windows-Setup.exe)
+- [Windows 7 SP1 installer (64-bit)](https://github.com/thelon3ly/videoDesk/releases/download/v1.0.0/VideoDesk-Windows7-Setup.exe)
 - [Android APK (Android 10 or newer)](https://github.com/thelon3ly/videoDesk/releases/download/v1.0.0/VideoDesk-Android.apk)
 
 The Android APK is development-signed and the Windows installer is unsigned. Both downloads are also listed on the [VideoDesk 1.0.0 release page](https://github.com/thelon3ly/videoDesk/releases/tag/v1.0.0).
@@ -42,7 +43,7 @@ To build a Windows installer, install PyInstaller and Inno Setup, obtain the off
 
 ## Windows 7
 
-See [windows7/README.md](windows7/README.md). This edition needs Windows 7 SP1 (64-bit) and older compatible dependencies. Its 2024 yt-dlp release cannot reliably support today's video sites; direct media links are the best fit. The Windows 7 build has not been tested on a Windows 7 machine.
+Download the [Windows 7 SP1 installer](https://github.com/thelon3ly/videoDesk/releases/download/v1.0.0/VideoDesk-Windows7-Setup.exe), or see [windows7/README.md](windows7/README.md) for build details. This edition needs Windows 7 SP1 (64-bit) and older compatible dependencies. Its 2024 yt-dlp release cannot reliably support today's video sites; direct media links are the best fit. The Windows 7 build has not been tested on a Windows 7 machine.
 
 ## License
 
