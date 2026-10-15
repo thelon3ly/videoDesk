@@ -4,6 +4,13 @@ Save a public video or its audio to the device you are using. Paste one URL, pre
 
 Use VideoDesk only for videos you are allowed to save. Private, paywalled, and DRM protected streams are not supported. Site support depends on yt-dlp and can change.
 
+## Download the apps
+
+- [Windows 10/11 installer (64-bit)](https://github.com/thelon3ly/videoDesk/releases/download/v1.0.0/VideoDesk-Windows-Setup.exe)
+- [Android APK (Android 10 or newer)](https://github.com/thelon3ly/videoDesk/releases/download/v1.0.0/VideoDesk-Android.apk)
+
+The Android APK is development-signed and the Windows installer is unsigned. Both downloads are also listed on the [VideoDesk 1.0.0 release page](https://github.com/thelon3ly/videoDesk/releases/tag/v1.0.0).
+
 ## Project layout
 
 - `android/` — native Android app with an on-device yt-dlp and FFmpeg backend.
@@ -13,7 +20,7 @@ Use VideoDesk only for videos you are allowed to save. Private, paywalled, and D
 
 ## Online video pages
 
-The GitHub Pages edition handles direct media files. Video page links such as YouTube need a running server to inspect formats and prepare the download. The included container serves the full VideoDesk interface and supports public YouTube, Vimeo, TikTok, and Dailymotion links. It saves completed downloads for one hour; the visitor's browser then saves the file to their phone or computer. Availability still depends on each source and yt-dlp.
+The GitHub Pages edition handles direct media files. Video page links such as YouTube need a running server to inspect formats and prepare the download. The included container serves the full VideoDesk interface and accepts public Internet Archive, YouTube, Vimeo, TikTok, and Dailymotion links. It saves completed downloads for one hour; the visitor's browser then saves the file to their phone or computer. Availability still depends on each source and yt-dlp.
 
 Use the [GitHub Pages app](https://thelon3ly.github.io/videoDesk/) to paste a link. Supported video pages open in the [online downloader](https://videodesk-online.onrender.com/) for quality and audio choices when the source permits cloud access. YouTube has returned rate limits and bot sign-in checks from Render, so YouTube downloads through this host are not reliable; the installed Android or Windows app may work from your device. Do not send browser cookies or account credentials to the public service. The Render Free plan spins down after inactivity and has usage limits. The service uses temporary storage and limits downloads to 250 MB, two simultaneous jobs, and eight downloads per visitor per hour. See `render.yaml` to deploy your own instance.
 

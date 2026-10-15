@@ -1,4 +1,9 @@
 .site-note{display:grid;gap:7px;max-width:850px;margin-top:30px;padding:18px 20px;border:1px solid #375962;border-radius:14px;background:#152c35;color:#c8e6ee;font-size:13px;line-height:1.5}
+.install-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:720px;margin:28px 0 32px}
+.install-links a{display:flex;flex-direction:column;gap:5px;padding:16px 18px;border:1px solid #395c64;border-radius:14px;background:#18313a;color:#eafff5;text-decoration:none;transition:background .2s,border-color .2s}
+.install-links a:hover,.install-links a:focus-visible{background:#1d4249;border-color:#7ae6bc}
+.install-links strong{display:flex;justify-content:space-between;gap:12px;font-size:15px}
+.install-links small{color:#a3c2c7;font-size:12px}
 .local-badge .badge-text{width:auto;height:auto;border-radius:0;background:none;box-shadow:none;white-space:nowrap}
 .site-note strong{color:#e5f8f0}
 .site-note a,.preview-note a,footer a{color:#86ecc7;text-decoration:underline;text-underline-offset:2px}
@@ -7,4 +12,4 @@
 .preview-frame:has(audio){display:flex;align-items:center;padding:30px;min-height:130px;aspect-ratio:auto}
 .jelly-chip{cursor:default}
 footer a{color:inherit}
-@media(max-width:620px){.badge-text{display:none}.site-note{margin-top:24px}.preview-frame:has(audio){padding:16px}}
+@media(max-width:620px){.badge-text{display:none}.install-links{grid-template-columns:1fr;margin:24px 0}.site-note{margin-top:24px}.preview-frame:has(audio){padding:16px}}
